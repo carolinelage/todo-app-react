@@ -381,11 +381,10 @@ h1 { margin: 32px 0; font-family: 'Manrope', sans-serif; font-size: 26px; letter
   .mobile-menu-overlay { position: fixed; z-index: 30; inset: 0; display: block; border: 0; background: rgba(8,3,8,.62); backdrop-filter: blur(3px); }
   .mobile-menu-button { display: grid; width: 36px; height: 36px; place-items: center; margin-right: 10px; border: 1px solid rgba(255,255,255,.14); border-radius: 9px; background: rgba(255,255,255,.06); color: var(--mint); cursor: pointer; }
   .mobile-menu-close { position: absolute; top: 18px; right: 16px; display: grid; width: 32px; height: 32px; place-items: center; border: 1px solid rgba(255,255,255,.12); border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; }
-  .mobile-drawer { position: fixed; z-index: 41; top: 0; bottom: 0; left: 0; display: grid; align-content: start; gap: 5px; width: min(292px, 86vw); padding: 70px 20px 24px; transform: translateX(-105%); transition: transform .25s ease; background: #21101f; box-shadow: 20px 0 60px rgba(0,0,0,.35); }
+  .mobile-drawer { position: fixed; z-index: 41; top: 0; bottom: 0; left: 0; display: flex; width: min(292px, 86vw); padding: 28px 16px 20px; transform: translateX(-105%); transition: transform .25s ease; background: rgba(15, 7, 14, .72); box-shadow: 20px 0 60px rgba(0,0,0,.35); backdrop-filter: blur(24px) saturate(130%); }
   .mobile-drawer.open { transform: translateX(0); }
-  .mobile-drawer a { display: flex; align-items: center; gap: 11px; min-height: 42px; padding: 0 12px; border-radius: 9px; color: var(--muted); font-size: 13px; }
-  .mobile-drawer a:hover { background: rgba(164,195,178,.12); color: var(--paper); }
-  .mobile-drawer .nav-label { margin: 0 10px 8px; }
+  .mobile-drawer .sidebar-logo { margin-bottom: 34px; }
+  .mobile-drawer .workspace-switcher { margin-bottom: 30px; }
   .dashboard-topbar { height: 62px; padding: 0 18px; }
   .topbar-actions { font-size: 0; }
   .topbar-divider { display: none; }

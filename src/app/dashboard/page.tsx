@@ -11,6 +11,8 @@ import LogoutButton from '../../components/auth/LogoutButton';
 import BrandLogo from '../../components/BrandLogo';
 import PlanBadge from '../../components/billing/PlanBadge';
 import { getFirebaseAuth, getFirebaseDb } from '../../lib/firebase';
+import { hasFeature } from '../../lib/entitlements';
+import { useUserPlan } from '../../hooks/useUserPlan';
 
 export default function HomePage() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -18,6 +20,8 @@ export default function HomePage() {
   const [workspaceName, setWorkspaceName] = useState('Meu workspace');
   const [currentDate, setCurrentDate] = useState(() => new Date());
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { plan, isLoading: isPlanLoading } = useUserPlan();
+  const canViewInsights = !isPlanLoading && hasFeature(plan, 'productivity_insights');
 
   useEffect(() => {
     return onAuthStateChanged(getFirebaseAuth(), (user) => {
@@ -64,7 +68,7 @@ export default function HomePage() {
           <Link href="/dashboard/tasks" className="nav-item" onClick={() => setIsMobileMenuOpen(false)}><FiInbox /> Minhas tarefas <span className="nav-count">3</span></Link>
           <Link href="/dashboard/tasks" className="nav-item" onClick={() => setIsMobileMenuOpen(false)}><FiCheckCircle /> Concluídas</Link>
           <span className="nav-label nav-label-spaced">Insights</span>
-          <Link href="/dashboard" className="nav-item" onClick={() => setIsMobileMenuOpen(false)}><FiBarChart2 /> Produtividade</Link>
+          {canViewInsights && <Link href="/dashboard" className="nav-item" onClick={() => setIsMobileMenuOpen(false)}><FiBarChart2 /> Produtividade</Link>}
           <Link href="/dashboard/settings" className="nav-item" onClick={() => setIsMobileMenuOpen(false)}><FiSettings /> Configurações</Link>
           {isAdmin && <Link href="/admin" className="nav-item" onClick={() => setIsMobileMenuOpen(false)}><FiBarChart2 /> Administração</Link>}
         </nav>
@@ -100,7 +104,7 @@ export default function HomePage() {
             <Link href="#task-input" className="new-task-button"><FiPlus /> Nova tarefa</Link>
           </div>
 
-          <div className="stats-grid">
+          {canViewInsights && <div className="stats-grid">
             <article className="stat-card stat-card-primary">
               <div className="stat-icon"><FiCheckCircle /></div>
               <span>Tarefas concluídas</span>
@@ -119,7 +123,7 @@ export default function HomePage() {
               <strong>78% <small>+12% vs. anterior</small></strong>
               <div className="stat-caption positive">Você está evoluindo</div>
             </article>
-          </div>
+          </div>}
 
           <section className="tasks-panel">
             <div className="panel-heading">

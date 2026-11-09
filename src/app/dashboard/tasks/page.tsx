@@ -8,8 +8,13 @@ import TasksOverview from '../../../components/todo/TasksOverview';
 import BrandLogo from '../../../components/BrandLogo';
 import PlanBadge from '../../../components/billing/PlanBadge';
 import MobileMenu from '../../../components/layout/MobileMenu';
+import { hasFeature } from '../../../lib/entitlements';
+import { useUserPlan } from '../../../hooks/useUserPlan';
 
 export default function TasksPage() {
+  const { plan, isLoading: isPlanLoading } = useUserPlan();
+  const canViewInsights = !isPlanLoading && hasFeature(plan, 'productivity_insights');
+
   return (
     <AuthGuard>
       <main className="dashboard-shell">
@@ -28,7 +33,7 @@ export default function TasksPage() {
             <Link href="/dashboard/tasks" className="nav-item active"><FiInbox /> Minhas tarefas</Link>
             <Link href="/dashboard/tasks" className="nav-item"><FiCheckCircle /> Concluídas</Link>
             <span className="nav-label nav-label-spaced">Insights</span>
-            <Link href="/dashboard/tasks" className="nav-item"><FiBarChart2 /> Produtividade</Link>
+            {canViewInsights && <Link href="/dashboard/tasks" className="nav-item"><FiBarChart2 /> Produtividade</Link>}
             <Link href="/dashboard/tasks" className="nav-item"><FiSettings /> Configurações</Link>
           </nav>
           <div className="sidebar-bottom"><LogoutButton /></div>
