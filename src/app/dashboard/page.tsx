@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { getIdTokenResult, onAuthStateChanged } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { FiBarChart2, FiCheckCircle, FiChevronDown, FiGrid, FiInbox, FiPlus, FiSettings } from 'react-icons/fi';
+import { FiBarChart2, FiCheckCircle, FiChevronDown, FiGrid, FiInbox, FiMenu, FiPlus, FiSettings, FiX } from 'react-icons/fi';
 import AuthGuard from '../../components/auth/AuthGuard';
 import LogoutButton from '../../components/auth/LogoutButton';
 import BrandLogo from '../../components/BrandLogo';
@@ -16,6 +16,8 @@ export default function HomePage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [profileName, setProfileName] = useState('');
   const [workspaceName, setWorkspaceName] = useState('Meu workspace');
+  const [currentDate, setCurrentDate] = useState(() => new Date());
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     return onAuthStateChanged(getFirebaseAuth(), (user) => {
@@ -29,13 +31,28 @@ export default function HomePage() {
     });
   }, []);
 
+  useEffect(() => {
+    const timer = window.setInterval(() => setCurrentDate(new Date()), 60_000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const hour = currentDate.getHours();
+  const greeting = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite';
+  const formattedDate = new Intl.DateTimeFormat('pt-BR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  }).format(currentDate);
+
   return (
     <AuthGuard>
     <main className="dashboard-shell">
-      <aside className="sidebar">
+      {isMobileMenuOpen && <button type="button" className="mobile-menu-overlay" aria-label="Fechar menu" onClick={() => setIsMobileMenuOpen(false)} />}
+      <aside className={`sidebar ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
         <Link href="/dashboard" className="sidebar-logo">
           <BrandLogo />
         </Link>
+        <button type="button" className="mobile-menu-close" onClick={() => setIsMobileMenuOpen(false)} aria-label="Fechar menu"><FiX /></button>
         <div className="workspace-switcher">
           <span className="workspace-avatar">S</span>
           <span><strong>{workspaceName}</strong><small>Plano pessoal</small></span>
@@ -43,13 +60,13 @@ export default function HomePage() {
         </div>
         <nav className="sidebar-nav" aria-label="Navegação principal">
           <span className="nav-label">Workspace</span>
-          <Link href="/dashboard" className="nav-item active"><FiGrid /> Visão geral</Link>
-          <Link href="/dashboard/tasks" className="nav-item"><FiInbox /> Minhas tarefas <span className="nav-count">3</span></Link>
-          <Link href="/dashboard/tasks" className="nav-item"><FiCheckCircle /> Concluídas</Link>
+          <Link href="/dashboard" className="nav-item active" onClick={() => setIsMobileMenuOpen(false)}><FiGrid /> Visão geral</Link>
+          <Link href="/dashboard/tasks" className="nav-item" onClick={() => setIsMobileMenuOpen(false)}><FiInbox /> Minhas tarefas <span className="nav-count">3</span></Link>
+          <Link href="/dashboard/tasks" className="nav-item" onClick={() => setIsMobileMenuOpen(false)}><FiCheckCircle /> Concluídas</Link>
           <span className="nav-label nav-label-spaced">Insights</span>
-          <Link href="/dashboard" className="nav-item"><FiBarChart2 /> Produtividade</Link>
-          <Link href="/dashboard/settings" className="nav-item"><FiSettings /> Configurações</Link>
-          {isAdmin && <Link href="/admin" className="nav-item"><FiBarChart2 /> Administração</Link>}
+          <Link href="/dashboard" className="nav-item" onClick={() => setIsMobileMenuOpen(false)}><FiBarChart2 /> Produtividade</Link>
+          <Link href="/dashboard/settings" className="nav-item" onClick={() => setIsMobileMenuOpen(false)}><FiSettings /> Configurações</Link>
+          {isAdmin && <Link href="/admin" className="nav-item" onClick={() => setIsMobileMenuOpen(false)}><FiBarChart2 /> Administração</Link>}
         </nav>
         <div className="sidebar-bottom">
           <div className="upgrade-card">
@@ -64,6 +81,7 @@ export default function HomePage() {
 
       <section className="dashboard-content">
         <header className="dashboard-topbar">
+          <button type="button" className="mobile-menu-button" onClick={() => setIsMobileMenuOpen(true)} aria-label="Abrir menu"><FiMenu /></button>
           <div className="breadcrumb"><span>Workspace</span><b>/</b> Visão geral</div>
           <div className="topbar-actions">
             <span className="status-dot" /> Tudo sincronizado
@@ -75,8 +93,8 @@ export default function HomePage() {
         <div className="dashboard-main">
           <div className="dashboard-heading">
             <div>
-              <span className="dashboard-eyebrow">Sábado, 8 de novembro</span>
-              <h1>Boa noite, {profileName || 'por aqui'} <span>✦</span></h1>
+              <span className="dashboard-eyebrow">{formattedDate}</span>
+              <h1>{greeting}, {profileName || 'por aqui'} <span>✦</span></h1>
               <p>Um passo de cada vez. Você está construindo algo incrível.</p>
             </div>
             <Link href="#task-input" className="new-task-button"><FiPlus /> Nova tarefa</Link>

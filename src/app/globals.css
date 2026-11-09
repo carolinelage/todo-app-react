@@ -217,6 +217,7 @@ h1 { margin: 32px 0; font-family: 'Manrope', sans-serif; font-size: 26px; letter
   border-bottom: 1px solid rgba(255, 255, 255, .08);
   color: var(--muted); font-size: 12px;
 }
+.mobile-menu-button, .mobile-menu-close, .mobile-menu-overlay { display: none; }
 .breadcrumb { display: flex; gap: 10px; }
 .breadcrumb span, .breadcrumb b { color: #806f79; }
 .topbar-actions { display: flex; align-items: center; gap: 9px; }
@@ -369,7 +370,11 @@ h1 { margin: 32px 0; font-family: 'Manrope', sans-serif; font-size: 26px; letter
   .stat-card:last-child { grid-column: span 2; }
 }
 @media (max-width: 640px) {
-  .sidebar { display: none; }
+  .sidebar { position: fixed; z-index: 40; top: 0; bottom: 0; left: 0; display: flex; width: min(292px, 86vw); transform: translateX(-105%); transition: transform .25s ease; box-shadow: 20px 0 60px rgba(0,0,0,.35); }
+  .sidebar.mobile-open { transform: translateX(0); }
+  .mobile-menu-overlay { position: fixed; z-index: 30; inset: 0; display: block; border: 0; background: rgba(8,3,8,.62); backdrop-filter: blur(3px); }
+  .mobile-menu-button { display: grid; width: 36px; height: 36px; place-items: center; margin-right: 10px; border: 1px solid rgba(255,255,255,.14); border-radius: 9px; background: rgba(255,255,255,.06); color: var(--mint); cursor: pointer; }
+  .mobile-menu-close { position: absolute; top: 18px; right: 16px; display: grid; width: 32px; height: 32px; place-items: center; border: 1px solid rgba(255,255,255,.12); border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; }
   .dashboard-topbar { height: 62px; padding: 0 18px; }
   .topbar-actions { font-size: 0; }
   .topbar-divider { display: none; }
