@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { FiArrowUpRight, FiCheck, FiZap } from 'react-icons/fi';
+import BrandLogo from '../../components/BrandLogo';
 
 const plans = [
   { name: 'Grátis', price: 'R$ 0', description: 'Para começar a organizar seus dias.', features: ['Até 3 listas', 'Tarefas ilimitadas', 'Sincronização local'], button: 'Plano atual' },
@@ -13,8 +14,8 @@ export default function PlansPage() {
   return (
     <main className="plans-page">
       <header className="plans-header">
+        <Link href="/dashboard" className="plans-logo"><BrandLogo /></Link>
         <Link href="/dashboard" className="plans-back">← Voltar ao dashboard</Link>
-        <span className="plans-mark">starTodo <b>plans</b></span>
       </header>
       <section className="plans-intro">
         <span className="dashboard-eyebrow"><FiZap /> escolha seu ritmo</span>

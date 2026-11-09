@@ -5,6 +5,11 @@ export const metadata = {
   description: 'Organize o que importa com o starTodo.',
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {

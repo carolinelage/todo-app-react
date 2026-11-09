@@ -7,6 +7,7 @@ import LogoutButton from '../../../components/auth/LogoutButton';
 import TasksOverview from '../../../components/todo/TasksOverview';
 import BrandLogo from '../../../components/BrandLogo';
 import PlanBadge from '../../../components/billing/PlanBadge';
+import MobileMenu from '../../../components/layout/MobileMenu';
 
 export default function TasksPage() {
   return (
@@ -34,6 +35,7 @@ export default function TasksPage() {
         </aside>
         <section className="dashboard-content">
           <header className="dashboard-topbar">
+            <MobileMenu />
             <div className="breadcrumb"><span>Workspace</span><b>/</b> Minhas tarefas</div>
             <div className="topbar-actions"><span className="status-dot" /> Tudo sincronizado <PlanBadge /> <span className="topbar-divider" /><span className="profile-avatar">CL</span></div>
           </header>

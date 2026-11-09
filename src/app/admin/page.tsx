@@ -8,6 +8,7 @@ import { FiArrowLeft, FiBarChart2, FiCheckCircle, FiInbox, FiUsers } from 'react
 import BrandLogo from '../../components/BrandLogo';
 import LogoutButton from '../../components/auth/LogoutButton';
 import { getFirebaseAuth, getFirebaseDb } from '../../lib/firebase';
+import MobileMenu from '../../components/layout/MobileMenu';
 
 type Metrics = { users: number; verified: number; lists: number; tasks: number; plans: Record<string, number> };
 
@@ -45,7 +46,7 @@ export default function AdminPage() {
 
   return (
     <main className="admin-shell">
-      <header className="admin-header"><Link href="/dashboard"><BrandLogo /></Link><div><span className="dashboard-eyebrow">Administração</span><h1>Visão do produto</h1></div><LogoutButton compact /></header>
+      <header className="admin-header"><MobileMenu isAdmin /><Link href="/dashboard"><BrandLogo /></Link><div><span className="dashboard-eyebrow">Administração</span><h1>Visão do produto</h1></div><LogoutButton compact /></header>
       <section className="admin-content">
         <p className="admin-intro">Acompanhe a saúde do starTodo com dados reais do Firebase.</p>
         <div className="stats-grid admin-stats">
